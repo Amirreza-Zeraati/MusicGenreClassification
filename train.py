@@ -51,7 +51,7 @@ def build_model(input_shape):
 
     # output layer
     model.add(keras.layers.Dense(10, activation='softmax'))
-
+    
     return model
 
 
@@ -62,14 +62,12 @@ def plot_history(history):
 
     fig, axs = plt.subplots(2)
 
-    # create accuracy sublpot
     axs[0].plot(history.history["accuracy"], label="train accuracy")
     axs[0].plot(history.history["val_accuracy"], label="test accuracy")
     axs[0].set_ylabel("Accuracy")
     axs[0].legend(loc="lower right")
     axs[0].set_title("Accuracy eval")
 
-    # create error sublpot
     axs[1].plot(history.history["loss"], label="train error")
     axs[1].plot(history.history["val_loss"], label="test error")
     axs[1].set_ylabel("Error")
@@ -92,30 +90,29 @@ def predict(model, X, y):
     # add a dimension to input data for sample - model.predict() expects a 4d array in this case
     X = X[np.newaxis, ...] # array shape (1, 130, 13, 1)
 
-    # perform prediction
     prediction = model.predict(X)
 
-    # get index with max value
     predicted_index = np.argmax(prediction, axis=1)
     print("Target: {}, Predicted label: {}".format(y, predicted_index))
 
 
 if __name__ == "__main__":
 
+    print('Building data generator ...')
     x_train, x_val, x_test, y_train, y_val, y_test = generator(0.25, 0.2)
     input_shape = (x_train.shape[1], x_train.shape[2], 1)
+    
+    print('Building model ...')
     model = build_model(input_shape)
 
-    # compile model
     optimiser = keras.optimizers.Adam(learning_rate=0.0001)
     model.compile(optimizer=optimiser,
                   loss='sparse_categorical_crossentropy',
                   metrics=['accuracy'])
 
-    # train model
+    print('Start training ...')
     history = model.fit(x_train, y_train, validation_data=(x_val, y_val), batch_size=32, epochs=40)
 
-    # plot accuracy/error for training and validation
     plot_history(history)
 
     # evaluate model on test set
@@ -126,8 +123,7 @@ if __name__ == "__main__":
     X_to_predict = x_test[100]
     y_to_predict = y_test[100]
 
-    # predict sample
     predict(model, X_to_predict, y_to_predict)
     
-    print('Saving model data...')
+    print('Saving model ...')
     model.save(os.path.join(MODEL_DIR, datetime.datetime.now().strftime('%Y%m%d-%H%M%S')))
