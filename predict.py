@@ -3,9 +3,8 @@ import numpy as np
 from tensorflow.keras.models import load_model
 
 
-MODEL_DIR = 'models/20230808-180316'
-DATASET_PATH = "data/genre/genres_original/metal/"
-AUDIO_PATH = "G:\musics/06 Cheap Thrills.mp3"
+MODEL_DIR = ''
+AUDIO_PATH = ''
 JSON_PATH = "data/save.json"
 
 N_MFCC = 13
