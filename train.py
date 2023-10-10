@@ -123,6 +123,7 @@ if __name__ == "__main__":
     X_to_predict = x_test[100]
     y_to_predict = y_test[100]
 
+    # predicting
     predict(model, X_to_predict, y_to_predict)
     
     print('Saving model ...')
