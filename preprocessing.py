@@ -3,8 +3,8 @@ import math
 import json
 import librosa
 
-DATA_PATH = "data/genre/genres_original"
-JSON_PATH = "data/save_data.json"
+DATA_PATH = 'data/genre/genres_original'
+JSON_PATH = ''
 SAMPLE_RATE = 22050
 TRACK_DURATION = 30
 SAMPLES_PER_TRACK = SAMPLE_RATE * TRACK_DURATION
@@ -42,7 +42,7 @@ def get_mfccs(data_path, json_path, num_mfcc=13, n_fft=1024, hop_length=256, num
                         data["labels"].append(i - 1)
 
     if save:
-        with open(json_path, "w") as fp:
+        with open(json_path, 'w') as fp:
             json.dump(data, fp, indent=4)
 
     if returnn:
